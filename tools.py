@@ -18,7 +18,7 @@ def web_search(query: str) -> str:
     results = tavily.search(
         query=query, 
         search_depth="advanced",
-        max_results=5, 
+        max_results=4, 
         include_raw_content=False, 
     )
     return results

@@ -14,6 +14,8 @@ from flask import Flask, request, Response, jsonify
 from flask_cors import CORS
 import json
 import traceback
+import re
+import time
 from agents import build_search_agent, build_reader_agent, writer_chain, critic_chain
 
 # ── App Setup ─────────────────────────────────────────────────────────────────
@@ -28,6 +30,26 @@ def sse(event_type: str, **fields) -> str:
     """Format one Server-Sent Event line."""
     payload = {"type": event_type, **fields}
     return f"data: {json.dumps(payload)}\n\n"
+
+
+def parse_rate_limit_error(exc: Exception) -> dict | None:
+    """
+    If exc is a Gemini / Google API rate-limit (429) error, return
+    { "retry_after": <ISO-string or None> }, else return None.
+    """
+    msg = str(exc)
+    # google-generativeai raises grpc ResourceExhausted or HTTP 429
+    if "429" not in msg and "ResourceExhausted" not in msg and "quota" not in msg.lower():
+        return None
+
+    retry_after = None
+    # try to pull a retry delay from the error message (e.g. "retry_delay { seconds: 60 }")
+    m = re.search(r'retry_delay\s*\{\s*seconds:\s*(\d+)', msg)
+    if m:
+        retry_after = time.strftime(
+            "%H:%M:%S", time.localtime(time.time() + int(m.group(1)))
+        )
+    return {"retry_after": retry_after}
 
 
 # ── Pipeline generator (yields SSE events) ────────────────────────────────────
@@ -65,9 +87,12 @@ def run_pipeline(topic: str):
         search_content = result["messages"][-1].content
         yield sse("step_done", step=1, content=search_content)
     except Exception as exc:
+        rl = parse_rate_limit_error(exc)
+        if rl is not None:
+            yield sse("rate_limit_error", step=1, **rl)
+            return
         yield sse("step_error", step=1, error=str(exc))
-        yield sse("pipeline_error",
-                   message=f"Search Agent failed: {exc}")
+        yield sse("pipeline_error", message=f"Search Agent failed: {exc}")
         traceback.print_exc()
         return
 
@@ -89,9 +114,12 @@ def run_pipeline(topic: str):
         reader_content = result["messages"][-1].content
         yield sse("step_done", step=2, content=reader_content)
     except Exception as exc:
+        rl = parse_rate_limit_error(exc)
+        if rl is not None:
+            yield sse("rate_limit_error", step=2, **rl)
+            return
         yield sse("step_error", step=2, error=str(exc))
-        yield sse("pipeline_error",
-                   message=f"Reader Agent failed: {exc}")
+        yield sse("pipeline_error", message=f"Reader Agent failed: {exc}")
         traceback.print_exc()
         return
 
@@ -111,9 +139,12 @@ def run_pipeline(topic: str):
         })
         yield sse("step_done", step=3, content=report)
     except Exception as exc:
+        rl = parse_rate_limit_error(exc)
+        if rl is not None:
+            yield sse("rate_limit_error", step=3, **rl)
+            return
         yield sse("step_error", step=3, error=str(exc))
-        yield sse("pipeline_error",
-                   message=f"Writer Agent failed: {exc}")
+        yield sse("pipeline_error", message=f"Writer Agent failed: {exc}")
         traceback.print_exc()
         return
 
@@ -128,9 +159,12 @@ def run_pipeline(topic: str):
         })
         yield sse("step_done", step=4, content=feedback)
     except Exception as exc:
+        rl = parse_rate_limit_error(exc)
+        if rl is not None:
+            yield sse("rate_limit_error", step=4, **rl)
+            return
         yield sse("step_error", step=4, error=str(exc))
-        yield sse("pipeline_error",
-                   message=f"Critic Agent failed: {exc}")
+        yield sse("pipeline_error", message=f"Critic Agent failed: {exc}")
         traceback.print_exc()
         return
 

@@ -9,6 +9,7 @@ load_dotenv()  # reads GOOGLE_API_KEY from your .env
 
 # model setup
 llm = ChatGoogleGenerativeAI(model="gemini-3.6-flash", temperature=0)
+# llm = ChatGoogleGenerativeAI(model="gemini-3.8-flash", temperature=0)
 
 #1st agent 
 def build_search_agent():
