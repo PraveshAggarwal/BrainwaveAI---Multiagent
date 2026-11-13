@@ -506,7 +506,7 @@ function createWelcomeScreen() {
   div.innerHTML = `
         <div class="welcome-glow"></div>
         <div class="welcome-eyebrow">Multi-Agent AI System</div>
-        <h1 class="welcome-title">Logic<span class="accent">Mind</span></h1>
+        <h1 class="welcome-title">Brainwave<span class="accent">AI</span></h1>
         <p class="welcome-sub">
             Four specialized AI agents collaborate — searching, scraping, writing,
             and critiquing — to deliver a polished research report on any topic.
