@@ -1,13 +1,13 @@
-# Core LLM + LangChain ecosystem
+# LLM + LangChain
 langchain
 langchain-core
 langchain-community
 langchain-google-genai
 
-# Google Generative AI
+# Google Generative AI SDK
 google-generativeai
 
-# Tavily Search Tool
+# Tavily Search
 tavily-python
 
 # Web scraping
@@ -15,36 +15,18 @@ beautifulsoup4
 requests
 lxml
 
+# Backend API
+flask
+flask-cors
+
 # Environment variables
 python-dotenv
 
-# Async support (important for agents/tools)
-aiohttp
-
-# Data handling (optional but useful in pipelines)
-pandas
-
-# Token counting / text utils
-tiktoken
-
-# Logging / debugging (optional but recommended)
-rich
-
-# Retry + robustness
-tenacity
-
-# JSON handling improvements
-orjson
-
-# Typing support (helps in bigger projects)
+# Data validation
 pydantic
 
-# Optional (for advanced parsing / HTML cleanup)
-html5lib
+# Pretty terminal output
+rich
 
-# Streamlit UI
-streamlit
-
-# Flask API (for frontend)
-flask
-flask-cors
+# Retry logic
+tenacity
