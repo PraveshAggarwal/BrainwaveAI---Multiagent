@@ -3,8 +3,8 @@
    (No chat history / localStorage — fresh session every time)
    ══════════════════════════════════════════════════════════════════════════════ */
 
-const API_BASE_DEFAULT = "http://127.0.0.1:5000";
-let API_BASE = API_BASE_DEFAULT;
+// const API_BASE = "https://brainwaveai-multiagent.onrender.com";
+const API_BASE = "https://brainwaveai-multiagent.onrender.com";
 
 // ── DOM References ──
 const chatMessages = document.getElementById("chatMessages");
@@ -27,16 +27,7 @@ let currentReport = null;
 //  INITIALIZATION
 // ══════════════════════════════════════════════════════════════════════════════
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // Load API_BASE from backend config
-  try {
-    const res = await fetch(`${API_BASE_DEFAULT}/api/config`);
-    const cfg = await res.json();
-    if (cfg.api_base) API_BASE = cfg.api_base;
-  } catch {
-    // fallback to default — backend may not be running yet
-  }
-
+document.addEventListener("DOMContentLoaded", () => {
   setupInputAutoResize();
 
   // Configure marked.js

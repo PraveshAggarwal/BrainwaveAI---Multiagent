@@ -200,12 +200,6 @@ def research():
     )
 
 
-@app.route("/api/config", methods=["GET"])
-def config():
-    """Expose non-secret config to the frontend."""
-    return jsonify({"api_base": os.getenv("API_BASE", "http://127.0.0.1:5000")})
-
-
 @app.route("/api/health", methods=["GET"])
 def health():
     """Simple health check."""
