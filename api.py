@@ -208,7 +208,7 @@ def health():
 
 if __name__ == "__main__":
     print("\n" + "=" * 60)
-    print("  🧠 Brainwave AI API Server")
+    print("   Brainwave AI API Server")
     print("  → http://127.0.0.1:5000")
     print("  → Open frontend/index.html in your browser")
     print("=" * 60 + "\n")

@@ -1,4 +1,4 @@
-# 🧠 Brainwave AI — Multi-Agent Research System
+#  Brainwave AI — Multi-Agent Research System
 
 A multi-agent AI pipeline that takes any research topic and automatically searches the web, scrapes content, writes a structured report, and critiques it — all streamed live to a clean chat-style frontend.
 
