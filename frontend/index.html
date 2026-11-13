@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brainwave AI · AI Research Agent</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ── Main Chat Area ── -->
+    <main class="chat-main" id="chatMain">
+
+        <!-- Top bar -->
+        <header class="topbar">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span class="logo-text">Brainwave<span class="accent"> AI</span></span>
+            </div>
+            <div class="topbar-divider"></div>
+            <div class="topbar-title">
+                <span class="topbar-label" id="topbarLabel">New Research</span>
+                <span class="topbar-status" id="topbarStatus"></span>
+            </div>
+            <div class="topbar-actions">
+                <button class="new-chat-btn" id="newChatBtn" title="New Research">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="downloadBtn" title="Download Report" style="display:none;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Chat messages -->
+        <div class="chat-messages" id="chatMessages">
+
+            <!-- Welcome screen -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-glow"></div>
+                <div class="welcome-eyebrow">Multi-Agent AI System</div>
+                <h1 class="welcome-title">Brainwave<span class="accent"> AI</span></h1>
+                <p class="welcome-sub">
+                    Four specialized AI agents collaborate — searching, scraping, writing,
+                    and critiquing — to deliver a polished research report on any topic.
+                </p>
+                <div class="agent-cards">
+                    <div class="agent-card">
+                        <div class="agent-icon">🔍</div>
+                        <div class="agent-name">Search Agent</div>
+                        <div class="agent-desc">Finds reliable sources across the web</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-icon">📄</div>
+                        <div class="agent-name">Reader Agent</div>
+                        <div class="agent-desc">Scrapes and extracts key content</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-icon">✍️</div>
+                        <div class="agent-name">Writer Agent</div>
+                        <div class="agent-desc">Drafts a structured research report</div>
+                    </div>
+                    <div class="agent-card">
+                        <div class="agent-icon">🧐</div>
+                        <div class="agent-name">Critic Agent</div>
+                        <div class="agent-desc">Reviews, scores and gives feedback</div>
+                    </div>
+                </div>
+
+                <div class="welcome-quick-topics">
+                    <div class="welcome-topics-label">Try an example topic</div>
+                    <div class="quick-topics">
+                        <button class="topic-chip" data-topic="LLM agents 2025">LLM agents 2025</button>
+                        <button class="topic-chip" data-topic="CRISPR gene editing">CRISPR gene editing</button>
+                        <button class="topic-chip" data-topic="Fusion energy progress">Fusion energy</button>
+                        <button class="topic-chip" data-topic="Quantum computing breakthroughs">Quantum computing</button>
+                        <button class="topic-chip" data-topic="Mars colonization plans">Mars colonization</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Input area -->
+        <div class="input-area" id="inputArea">
+            <div class="input-wrapper">
+                <div class="input-container">
+                    <textarea
+                        id="topicInput"
+                        placeholder="Enter a research topic… e.g. Quantum computing breakthroughs in 2025"
+                        rows="1"
+                        maxlength="500"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" title="Run Research Pipeline">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                    <button class="stop-btn" id="stopBtn" title="Stop Pipeline" style="display:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-hint">
+                    <span class="dm-mono">Press Enter to send · Shift+Enter for new line</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ── Markdown rendering (marked.js) ── -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
