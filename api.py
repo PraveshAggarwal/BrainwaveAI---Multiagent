@@ -16,7 +16,11 @@ import json
 import traceback
 import re
 import time
+import os
+from dotenv import load_dotenv
 from agents import build_search_agent, build_reader_agent, writer_chain, critic_chain
+
+load_dotenv()
 
 # ── App Setup ─────────────────────────────────────────────────────────────────
 
@@ -196,6 +200,12 @@ def research():
     )
 
 
+@app.route("/api/config", methods=["GET"])
+def config():
+    """Expose non-secret config to the frontend."""
+    return jsonify({"api_base": os.getenv("API_BASE", "http://127.0.0.1:5000")})
+
+
 @app.route("/api/health", methods=["GET"])
 def health():
     """Simple health check."""
@@ -207,15 +217,10 @@ def health():
 # ══════════════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
+    port = int(os.getenv("PORT", 5000))
     print("\n" + "=" * 60)
-    print("   Brainwave AI API Server")
-    print("  → http://127.0.0.1:5000")
+    print("  🧠 Brainwave AI API Server")
+    print(f"  → http://127.0.0.1:{port}")
     print("  → Open frontend/index.html in your browser")
     print("=" * 60 + "\n")
-
-    app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True,
-        threaded=True,       # handle concurrent SSE streams
-    )
+    app.run(host="0.0.0.0", port=port, debug=True, threaded=True)

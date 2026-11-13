@@ -4,12 +4,11 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from tools import web_search, scrape_url
 from dotenv import load_dotenv
+import os
 
-load_dotenv()  # reads GOOGLE_API_KEY from your .env
+load_dotenv()
 
-# model setup
-llm = ChatGoogleGenerativeAI(model="gemini-3.6-flash", temperature=0)
-# llm = ChatGoogleGenerativeAI(model="gemini-3.8-flash", temperature=0)
+llm = ChatGoogleGenerativeAI(model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"), temperature=0)
 
 #1st agent 
 def build_search_agent():
