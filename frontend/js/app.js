@@ -3,7 +3,6 @@
    (No chat history / localStorage — fresh session every time)
    ══════════════════════════════════════════════════════════════════════════════ */
 
-// const API_BASE = "https://brainwaveai-multiagent.onrender.com";
 const API_BASE = "https://brainwaveai-multiagent.onrender.com";
 
 // ── DOM References ──

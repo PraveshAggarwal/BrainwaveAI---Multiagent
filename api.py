@@ -25,7 +25,7 @@ load_dotenv()
 # ── App Setup ─────────────────────────────────────────────────────────────────
 
 app = Flask(__name__)
-CORS(app)  # allow the frontend (file:// or any origin) to call us
+CORS(app, origins="*", supports_credentials=False)
 
 
 # ── SSE helper ────────────────────────────────────────────────────────────────
